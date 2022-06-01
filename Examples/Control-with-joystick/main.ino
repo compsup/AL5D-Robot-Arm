@@ -18,8 +18,7 @@ void setup() {
     ssc32u.write("#0P1500 #1P1500 #2P1500 #3P1500 #4P1500 #5P1500 #6P1500\r");
     left_base_y = analogRead(left_y_pin);
 }
-int8_t step0 = 0;
-uint16_t pulse = 1500;
+uint16_t pulse0 = 1500;
 uint16_t pulse1 = 1500;
 uint16_t pulse2 = 1500;
 uint16_t pulse3 = 1500;
@@ -27,12 +26,10 @@ uint16_t pulse4 = 1500;
 uint16_t pulse5 = 1500;
 
 void loop() {
-    
-    step0 = (analogRead(left_y_pin) - left_base_y) * 0.02;
-    pulse += step0;
+    pulse0 += (analogRead(left_y_pin) - left_base_y) / 50;
 
     Serial.print("Pulse: ");
-    Serial.println(pulse);
+    Serial.println(pulse0);
     Serial.print("Step: ");
     Serial.println(step0);
     Serial.print("left_base_y: ");
@@ -42,6 +39,6 @@ void loop() {
     // Motor instructions are as follows
     // #<motor_num>P<pulse_value>\r
     char output[80];
-    sprintf(output, "#0P%u #1P%u #2P%u #3P%u #4P%u #5P%u\r", pulse, pulse1, pulse2, pulse3, pulse4, pulse5);
+    sprintf(output, "#0P%u #1P%u #2P%u #3P%u #4P%u #5P%u\r", pulse0, pulse1, pulse2, pulse3, pulse4, pulse5);
     ssc32u.write(output);
 }
