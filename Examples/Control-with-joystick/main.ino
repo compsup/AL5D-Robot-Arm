@@ -26,6 +26,7 @@ uint16_t pulse4 = 1500;
 uint16_t pulse5 = 1500;
 
 void loop() {
+    // Formula to give us a proper step value too increase or decrease the pulse by.
     pulse0 += (analogRead(left_y_pin) - left_base_y) / 50;
 
     Serial.print("Pulse: ");
