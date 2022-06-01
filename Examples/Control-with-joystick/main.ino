@@ -40,7 +40,8 @@ void loop()
     // Formula to give us a proper step value too increase or decrease the pulse by.
     pulses[0] -= (analogRead(left_y_pin) - left_base_y) / 15;   // Base
     pulses[1] += (analogRead(left_x_pin) - left_base_x) / 25;   // Shoulder
-    pulses[2] += (analogRead(right_y_pin) - right_base_y) / 25; // Elbow
+    pulses[2] += (analogRead(right_x_pin) - right_base_x) / 25; // Elbow
+    pulses[3] += (analogRead(right_y_pin) - right_base_y) / 25; // Wrist-vert
 
     for (int i = 0; i < 6; i++)
     {
