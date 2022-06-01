@@ -26,14 +26,8 @@ void setup()
     right_base_y = analogRead(right_y_pin);
     right_base_x = analogRead(right_x_pin);
 }
-uint16_t pulse0 = 1500;
-uint16_t pulse1 = 1500;
-uint16_t pulse2 = 1500;
-uint16_t pulse3 = 1500;
-uint16_t pulse4 = 1500;
-uint16_t pulse5 = 1500;
 
-uint16_t pulses[] = {pulse0, pulse1, pulse2, pulse3, pulse4, pulse5};
+uint16_t pulses[] = {1500, 1500, 1500, 1500, 1500, 1500};
 
 void loop()
 {
@@ -55,8 +49,8 @@ void loop()
         }
     }
 
-    // Motor instructions are as follows
-    // #<motor_num>P<pulse_value>\r
+    // Motor instructions are as follows, note: S and T are optional
+    // #<servo_num>P<pulse>S<speed>T<time>\r     
     char output[80];
     sprintf(output, "#0P%u #1P%u #2P%u #3P%u #4P%u #5P%u\r", pulses[0], pulses[1], pulses[2], pulses[3], pulses[4], pulses[5]);
     ssc32u.write(output);

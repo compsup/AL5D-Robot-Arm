@@ -75,8 +75,8 @@ void loop()
     Serial.println(pulse, DEC);
     Serial.println("");
 
-    // Motor instructions are as follows
-    // #<motor_num>P<pulse_value>\r
+    // Motor instructions are as follows, note: S and T are optional
+    // #<servo_num>P<pulse>S<speed>T<time>\r    
     char output[80];
     sprintf(output, "#0P%u #1P%u #2P%u #3P%u #4P%u #5P%u\r", pulse, pulse, pulse, pulse, pulse, pulse);
     ssc32u.write(output);
