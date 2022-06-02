@@ -34,7 +34,7 @@ Make sure you don't have a formatter that changes the style of all the code, thi
 ## List of some things to keep in mind when making a PR
 - No spelling mistakes
 - Make sure it actually run's
-- Commits need too be 
+- Commits need too be well named
 
 
 
