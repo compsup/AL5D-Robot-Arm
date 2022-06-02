@@ -4,7 +4,7 @@
 const int left_SW_pin = 7;
 const int left_x_pin = A0;
 const int left_y_pin = A1;
-const int right_SW_pin = 7;
+const int right_SW_pin = 8;
 const int right_x_pin = A5;
 const int right_y_pin = A4;
 const int CLK = 2;
@@ -85,6 +85,19 @@ void loop()
         }
         // Remember last button press event
         lastButtonPress = millis();
+    }
+
+    // open and close function for hand
+    int left_btn_State = digitalread(left_SW_pin);
+    int right_btn_State = digitalread(right_SW_pin);
+    // when either button is pressed, the values of pulse will increase or decrese by 10
+    if (left_btn_State == 0)
+    {
+        pulses[4] += 10 
+    } 
+    else if (right_SW_pin == 0)
+    {   
+        pulses[4] -= 10
     }
 
     // Formula to give us a proper step value too increase or decrease the pulse by.
