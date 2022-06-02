@@ -42,6 +42,8 @@ void setup()
 }
 
 uint16_t pulses[6] = {1500, 1500, 1500, 1500, 1500, 1500};
+uint16_t max[6] = {2500, 2500, 2500, 2500, 2500, 2500}
+uint16_t min[6] = {500, 500, 500, 500, 500, 500}
 
 void loop()
 {
@@ -54,13 +56,13 @@ void loop()
     // Prevent servos from over-extending
     for (uint8_t i = 0; i < 6; i++)
     {
-        if (pulses[i] >= 2500)
+        if (pulses[i] >= max[i])
         {
-            pulses[i] = 2500;
+            pulses[i] = max[i];
         }
-        else if (pulses[i] <= 500)
+        else if (pulses[i] <= min[i])
         {
-            pulses[i] = 500;
+            pulses[i] = min[i];
         }
     }
 
