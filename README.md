@@ -9,8 +9,6 @@ The arduino connects too the SSC-32U through RX and TX pins over Serial.
 
 Instructions are sent in the format of `#<servo_num>P<pulse>S<speed>T<time>\r`, the S and T are optional.
 
-#
-
 This project is liscensed under the GPL-3.0 license.
 
 > ~ <i>I like bread. But only in the winter.</i> ~
