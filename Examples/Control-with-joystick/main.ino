@@ -12,8 +12,7 @@ const int DT = 3;
 const int SW = 4;
 
 //Encoder Setup
-int currentStateCLK;
-int lastStateCLK;
+int currentStateCLK, lastStateCLK;
 unsigned long lastButtonPress = 0;
 
 // Offsets for joystick deadzone - get's setup at startup
@@ -41,9 +40,6 @@ void setup()
     ssc32u.listen();
     Serial.println(" Done");
 
-    // Read the initial state of CLK
-    lastStateCLK = digitalRead(CLK);
-
     // Center servos
     Serial.print("Centering Servos...");
     ssc32u.write("#0P1500 #1P1500 #2P1500 #3P1500 #4P1500 #5P1500 #6P1500\r");
@@ -53,6 +49,7 @@ void setup()
     left_base_x = analogRead(left_x_pin);
     right_base_y = analogRead(right_y_pin);
     right_base_x = analogRead(right_x_pin);
+    lastStateCLK = digitalRead(CLK);
     Serial.println(" Done\n");
     Serial.println("===> Starting Main Loop <===");
 
@@ -75,7 +72,7 @@ void loop()
     if (btnState == LOW)
     {
         // if 50ms have passed since last LOW pulse, it means that the
-        // button has been pressed, released and pressed again
+        // button has been pressed, released, and pressed again
         if (millis() - lastButtonPress > 50)
         {
             for (uint8_t i = 0; i < 6; i++)
@@ -87,17 +84,17 @@ void loop()
         lastButtonPress = millis();
     }
 
-    // open and close function for hand
-    int left_btn_State = digitalread(left_SW_pin);
-    int right_btn_State = digitalread(right_SW_pin);
-    // when either button is pressed, the values of pulse will increase or decrese by 10
+    // open and close logic for gripper
+    int left_btn_State = digitalRead(left_SW_pin);
+    int right_btn_State = digitalRead(right_SW_pin);
+
     if (left_btn_State == 0)
     {
-        pulses[4] += 10 
+        pulses[4] += 10;
     } 
     else if (right_SW_pin == 0)
     {   
-        pulses[4] -= 10
+        pulses[4] -= 10;
     }
 
     // Formula to give us a proper step value too increase or decrease the pulse by.
@@ -131,7 +128,6 @@ void loop()
 //Servo #5 Pulse Formula. Changed when the encoder is rotated
 void updateEncoder()
 {
-    // Read the current state of CLK
     currentStateCLK = digitalRead(CLK);
 
     // If last and current state of CLK are different, then pulse occurred
@@ -147,10 +143,8 @@ void updateEncoder()
         }
         else
         {
-            // Encoder is rotating CW so increment
             pulses[5] -= 100;
         }
     }
-    // Remember last CLK state
     lastStateCLK = currentStateCLK;
 }
