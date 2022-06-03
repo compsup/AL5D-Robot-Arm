@@ -60,7 +60,7 @@ void setup()
     Serial.print("Centering Servos...");
     ssc32u.write("#0P1500 #1P1500 #2P1500 #3P1500 #4P1500 #5P1500 #6P1500\r");
     Serial.println(" Done");
-    Serial.print("Calibrating Joysticks...");
+    Serial.print("Calibrating Joysticks & Enocoder...");
     left_base_y = analogRead(left_y_pin);
     left_base_x = analogRead(left_x_pin);
     right_base_y = analogRead(right_y_pin);
