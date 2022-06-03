@@ -1,3 +1,17 @@
+// Example code for a controller for the AL5D Robot Arm
+// Created by Tyler Dakers and Duncan McQuat
+
+// HARDWARE
+// 2x Arduino Joystick Modules
+// 1x Rotary Encoder Module
+// 1x Breadboard (+5v and Ground channels, option joystick and rotary encoder pins)
+
+// PINS
+// Connect the RX pin on the SSC-32U to pin 13 and the TX pin to pin 12
+// Connect +5v pins and GND pins to Arduino through Breadboard channels
+// On left joystick connect VRX to pin A0, VRY to pin A1, and SW to pin 7
+// On right joystick connect VRX to pin A5, VRY to pin A4, and SW to pin 8
+// On rotary encoder connect CLK to pin 2, DT to pin 3, and SW to pin 4
 #include <SoftwareSerial.h>
 
 // Arduino pin numbers
