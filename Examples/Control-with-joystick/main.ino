@@ -26,7 +26,9 @@ void setup()
 {
     // Pin layouts
     pinMode(left_SW_pin, INPUT);
+    pinMode(right_SW_pin, INPUT);
     digitalWrite(left_SW_pin, HIGH);
+    digitalWrite(right_SW_pin, HIGH);
     pinMode(CLK, INPUT);
     pinMode(DT, INPUT);
     pinMode(SW, INPUT_PULLUP);
@@ -61,8 +63,8 @@ void setup()
 
 // Define arrays for servo values, maxes, and minimums
 uint16_t pulses[6] = {1500, 1500, 1500, 1500, 1500, 1500};
-uint16_t max[6] = {2500, 2500, 2500, 2500, 2500, 2500};
-uint16_t min[6] = {500, 500, 500, 500, 500, 500};
+uint16_t max[6] = {2500, 2000, 1800, 2500, 2500, 2500};
+uint16_t min[6] = {500, 800, 800, 500, 500, 500};
 
 void loop()
 {
@@ -79,6 +81,9 @@ void loop()
             {
                 pulses[i] = 1500;
             }
+            // Make the reset motion smoother
+            ssc32u.write("#0P1500 #1P1500 #2P1500 #3P1500 #4P1500 #5P1500 #6P1500 T1000 \r");
+            delay(1000);
         }
         // Remember last button press event
         lastButtonPress = millis();
@@ -90,15 +95,15 @@ void loop()
 
     if (left_btn_State == 0)
     {
-        pulses[4] += 10;
+        pulses[4] += 40;
     } 
-    else if (right_SW_pin == 0)
+    else if (right_btn_State == 0)
     {   
-        pulses[4] -= 10;
+        pulses[4] -= 40;
     }
 
     // Formula to give us a proper step value too increase or decrease the pulse by.
-    pulses[0] -= (analogRead(left_y_pin) - left_base_y) / 15;   // Base
+    pulses[0] -= (analogRead(left_y_pin) - left_base_y) / 25;   // Base
     pulses[1] += (analogRead(left_x_pin) - left_base_x) / 25;   // Shoulder
     pulses[2] += (analogRead(right_x_pin) - right_base_x) / 25; // Elbow
     pulses[3] += (analogRead(right_y_pin) - right_base_y) / 25; // Wrist-vert
