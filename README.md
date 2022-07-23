@@ -3,6 +3,7 @@ Arduino code for controlling the AL5D Robot Arm by Lynxmotion. Code here can be 
 
 # Useful Resouces
 - [SSC-32U Documentation](https://www.robotshop.com/media/files/pdf2/lynxmotion_ssc-32u_usb_user_guide.pdf)
+- [AL5D Robot Arm Video Guide](https://www.youtube.com/watch?v=Xuw9OmnIHPk)
 
 # Technical Details
 The arduino connects too the SSC-32U through RX and TX pins over Serial. 
