@@ -1,5 +1,7 @@
 #include <al5d.h>
 
+#include <al5d.h>
+
 const int input = 8;
 int pulse = 0;
 int var = 0;
@@ -22,8 +24,7 @@ void setup()
 
 int8_t degree;
 uint8_t num;
-int8_t time = 1;
-int8_t speed = 2000;
+int8_t speed = 99;
 
 void loop() 
 {
@@ -50,45 +51,51 @@ void loop()
     else if (pulse == 4 && timer == 50) //3 Dialed
   {
     num = 3;
-    degree = 90;
+    degree = AL5D.get_motor_loc(num) - 20;
   }
+  
     else if (pulse == 5 && timer == 50) //4 Dialed
   {
     num = 3;
-    degree = -90;
+    degree = AL5D.get_motor_loc(num) + 20;
   }
+  
     else if (pulse == 6 && timer == 50) //5 Dialed
   {
-    num = 4;
-    degree = -75;
+    num = 2;
+    degree = AL5D.get_motor_loc(num) + 20;
   }
+  
     else if (pulse == 7 && timer == 50) //6 Dialed
   {
-    num = 4;
-    degree = -75;
+    num = 2;
+    degree = AL5D.get_motor_loc(num) - 20;
   }
+  
     else if (pulse == 8 && timer == 50) //7 Dialed
   {
-    num = 4;
-    degree = -75;
+    num = 1;
+    degree = AL5D.get_motor_loc(num) - 20;
   }
+  
     else if (pulse == 9 && timer == 50) //8 Dialed
   {
-    num = 4;
-    degree = -75;
+    num = 1;
+    degree = AL5D.get_motor_loc(num) + 20;
   }
+  
     else if (pulse == 10 && timer == 50) //9 Dialed
   {
-    num = 4;
-    degree = -75;
+    num = 0;
+    degree = AL5D.get_motor_loc(num) - 20;
   }
     else if (pulse == 11 && timer == 50) //0 Dialed
   {
-    num = 4;
-    degree = -75;
+    num = 0;
+    degree = AL5D.get_motor_loc(num) + 20;
   }
   
-  AL5D.set_motor(num, degree, time, speed);
+  AL5D.set_motor(num, degree, 0, speed);
 
   // Write Determined Pulse Value
     if(pulse > 1 && timer == 50)
