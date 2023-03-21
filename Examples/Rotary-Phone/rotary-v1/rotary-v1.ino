@@ -1,7 +1,5 @@
 #include <al5d.h>
 
-#include <al5d.h>
-
 const int input = 8;
 int pulse = 0;
 int var = 0;
