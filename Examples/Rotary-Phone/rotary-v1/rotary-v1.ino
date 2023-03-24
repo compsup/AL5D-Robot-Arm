@@ -1,14 +1,10 @@
 #include <al5d.h>
 
-#include <al5d.h>
-
 const int input = 8;
 int pulse = 0;
 int var = 0;
 
 int timer = 0;
-int A = 0;
-int B = 0;
 
 al5d AL5D;
 
@@ -24,7 +20,7 @@ void setup()
 
 int8_t degree;
 uint8_t num;
-int8_t time = 5;
+int time = 300;
 
 void loop() 
 {
@@ -38,7 +34,7 @@ void loop()
     pulse++;
     timer = 0;
   }
-  if (pulse > 1 && timer == 101 )
+  if (pulse > 1 && timer == 10 )
   {
   if (pulse == 2) //1 Dialed
   {
@@ -97,7 +93,7 @@ void loop()
     degree = AL5D.get_motor_loc(num) + 20;
   }
   }
-  AL5D.set_motor(num, degree, 300);
+  AL5D.set_motor(num, degree, time);
 
   // Write Determined Pulse Value
     if(pulse > 1 && timer == 50)
