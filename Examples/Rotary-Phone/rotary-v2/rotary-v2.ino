@@ -1,7 +1,7 @@
 // This program utilizes a rotary phone to execute functions on the AL5D robotic arm.
 // The instructions are as follows:
 
-/* On Startup:
+/* :
 1 = Select Base (1)
 2 = Select Shoulder (2)
 3 = Select Elbow (3)
@@ -23,19 +23,26 @@
 7/8 = Increment Speed
 9 = Reset Current Motor
 10 = Deselect Motor
-* once a command has been executed, the process will repeat
-
-Example - Input: 26 = Decrease Degree of Motor 2 by 20 Degrees
+* once a command has been executed, another command can be inputed. To return to initial selection, delect current motor
 */
 
 #include <al5d.h>
+#include <LiquidCrystal_I2C.h>
 
 const int input = 8;
 uint8_t pulse = 0;
 int var = 0;
 int timer = 0;
 
+int8_t degree;
+int8_t increment;
+uint8_t num;
+float time = 500;
+int toggle = 0;
+
 al5d AL5D;
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 void setup()
 {
@@ -43,14 +50,22 @@ void setup()
   Serial.begin(9600);
   // Robotic Arm Startup
   AL5D.begin();
-  Serial.println("******** Setup Complete *********");
+
+  lcd.init();
+  lcd.clear();
+  lcd.backlight();
+
+  lcd.print("AL5D Robotic Arm");
+  lcd.setCursor(1, 1);
+  lcd.print("w Rotory Phone");
+  delay(3000);
+  lcd.clear();
+  lcd.setCursor(1, 0);
+  lcd.print("SLCT Motor 1-6,");
+  lcd.setCursor(1, 1);
+  lcd.print("SPD 7-8, RES 9");
 }
 
-int8_t degree;
-uint8_t num;
-int time = 500;
-
-int toggle = 0;
 
 
 void loop() 
@@ -67,55 +82,120 @@ void loop()
 
   if (pulse > 1 && timer == 10 )
   {
-
-    
     if (pulse == 8) //7 Dialed
     {
       if ( time > 0 )
       {
         time -= 500;
       }
-      
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Speed: ");
+      lcd.print(time/1000);
+      lcd.print("s");
+      delay(1000);
+      lcd.clear();
+      lcd.setCursor(1, 0);
+      lcd.print("SLCT Motor 1-6,");
+      lcd.setCursor(1, 1);
+      lcd.print("SPD 7-8, RES 9");
     }
 
     else if (pulse == 9) //8 Dialed
     {
       time += 500;
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Speed: ");
+      lcd.print(time/1000);
+      lcd.print("s");
+      delay(1000);
+      lcd.clear();
+      lcd.setCursor(1, 0);
+      lcd.print("SLCT Motor 1-6,");
+      lcd.setCursor(1, 1);
+      lcd.print("SPD 7-8, RES 9");
     }
 
     else if (toggle == 1) //Dials will move motors x degrees
     {
       if (pulse == 2) //1 Dialed
       {
-        degree = AL5D.get_motor_loc(num) + 5;
+        increment = 5;
       }
       else if (pulse == 3 ) //2 Dialed
       {
-        degree = AL5D.get_motor_loc(num) - 5;
+        increment = -5;
       }
       else if (pulse == 4 ) //3 Dialed
       {
-        degree = AL5D.get_motor_loc(num) + 10;
+        increment = 10;
       }
       else if (pulse == 5 ) //4 Dialed
       {
-        degree = AL5D.get_motor_loc(num) - 10;
+        increment = -10;
       }
       else if (pulse == 6) //5 Dialed
       {
-        degree = AL5D.get_motor_loc(num) + 20;
+        increment = 20;
       }
       else if (pulse == 7) //6 Dialed
       {
-        degree = AL5D.get_motor_loc(num) - 20;
+        increment = -20;
       }
       else if (pulse == 10) //9 Dialed
       {
         degree = 0;
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Reset Selected");
+        delay(1000);
+        lcd.clear();
+        lcd.setCursor(1, 0);
+        lcd.print("SLCT Motor 1-6,");
+        lcd.setCursor(1, 1);
+        lcd.print("SPD 7-8, RES 9");
       }
-      else if (pulse == 11) {} //0 Dialed
-      toggle = 0;  
-       
+      else if (pulse == 11) //0 Dialed
+      { 
+        toggle = 0; 
+
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Motor Deselected");
+        delay(1000);
+        lcd.clear();
+        lcd.setCursor(1, 0);
+        lcd.print("SLCT Motor 1-6,");
+        lcd.setCursor(1, 1);
+        lcd.print("SPD 7-8, RES 9");
+      } 
+      if (pulse < 10)
+      {
+        if (AL5D.get_motor_loc(num) + increment > 90)
+        {
+          degree = 90;
+        }
+        else if (AL5D.get_motor_loc(num) + increment < -90)
+        {
+          degree = -90;
+        }
+        else
+        {
+          degree = AL5D.get_motor_loc(num) + increment;
+        }
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Set Motor: ");
+        lcd.print(degree);
+        delay(1000);
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("SLCT Motor: ");
+        lcd.print(num + 1);
+        lcd.setCursor(0, 1);
+        lcd.print("DSLCT -> 0");
+      }
     }
 
   else //Dials will select motor to move
@@ -124,6 +204,16 @@ void loop()
       {
         AL5D.center_motors();
         degree = 0;
+        
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("All Reset");
+        delay(1000);
+        lcd.clear();
+        lcd.setCursor(1, 0);
+        lcd.print("SLCT Motor 1-6,");
+        lcd.setCursor(1, 1);
+        lcd.print("SPD 7-8, RES 9");
       }
       else if (pulse == 11) {}
       else
@@ -131,10 +221,16 @@ void loop()
         num = 0;
         num = pulse - 2;   
         toggle = 1; 
-        degree = AL5D.get_motor_loc(num);   
+        degree = AL5D.get_motor_loc(num);
+        
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("SLCT Motor: ");
+        lcd.print(num + 1);
+        lcd.setCursor(0, 1);
+        lcd.print("DSLCT -> 0");
       }
-    }
-    
+    } 
   }
 
   AL5D.set_motor(num, degree, time);
