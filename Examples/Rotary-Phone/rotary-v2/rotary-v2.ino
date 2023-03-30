@@ -59,13 +59,8 @@ void setup()
   lcd.setCursor(1, 1);
   lcd.print("w Rotory Phone");
   delay(3000);
-  lcd.clear();
-  lcd.setCursor(1, 0);
-  lcd.print("SLCT Motor 1-6,");
-  lcd.setCursor(1, 1);
-  lcd.print("SPD 7-8, RES 9");
+  DefaultMenu();
 }
-
 
 
 void loop() 
@@ -94,11 +89,7 @@ void loop()
       lcd.print(time/1000);
       lcd.print("s");
       delay(1000);
-      lcd.clear();
-      lcd.setCursor(1, 0);
-      lcd.print("SLCT Motor 1-6,");
-      lcd.setCursor(1, 1);
-      lcd.print("SPD 7-8, RES 9");
+      DefaultMenu();
     }
 
     else if (pulse == 9) //8 Dialed
@@ -110,11 +101,7 @@ void loop()
       lcd.print(time/1000);
       lcd.print("s");
       delay(1000);
-      lcd.clear();
-      lcd.setCursor(1, 0);
-      lcd.print("SLCT Motor 1-6,");
-      lcd.setCursor(1, 1);
-      lcd.print("SPD 7-8, RES 9");
+      DefaultMenu();
     }
 
     else if (toggle == 1) //Dials will move motors x degrees
@@ -150,11 +137,8 @@ void loop()
         lcd.setCursor(0, 0);
         lcd.print("Reset Selected");
         delay(1000);
-        lcd.clear();
-        lcd.setCursor(1, 0);
-        lcd.print("SLCT Motor 1-6,");
-        lcd.setCursor(1, 1);
-        lcd.print("SPD 7-8, RES 9");
+        SelectMenu();
+
       }
       else if (pulse == 11) //0 Dialed
       { 
@@ -164,11 +148,7 @@ void loop()
         lcd.setCursor(0, 0);
         lcd.print("Motor Deselected");
         delay(1000);
-        lcd.clear();
-        lcd.setCursor(1, 0);
-        lcd.print("SLCT Motor 1-6,");
-        lcd.setCursor(1, 1);
-        lcd.print("SPD 7-8, RES 9");
+        DefaultMenu();
       } 
       if (pulse < 10)
       {
@@ -189,12 +169,7 @@ void loop()
         lcd.print("Set Motor: ");
         lcd.print(degree);
         delay(1000);
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("SLCT Motor: ");
-        lcd.print(num + 1);
-        lcd.setCursor(0, 1);
-        lcd.print("DSLCT -> 0");
+        SelectMenu();
       }
     }
 
@@ -209,11 +184,7 @@ void loop()
         lcd.setCursor(0, 0);
         lcd.print("All Reset");
         delay(1000);
-        lcd.clear();
-        lcd.setCursor(1, 0);
-        lcd.print("SLCT Motor 1-6,");
-        lcd.setCursor(1, 1);
-        lcd.print("SPD 7-8, RES 9");
+        DefaultMenu();
       }
       else if (pulse == 11) {}
       else
@@ -223,12 +194,7 @@ void loop()
         toggle = 1; 
         degree = AL5D.get_motor_loc(num);
         
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("SLCT Motor: ");
-        lcd.print(num + 1);
-        lcd.setCursor(0, 1);
-        lcd.print("DSLCT -> 0");
+        SelectMenu();
       }
     } 
   }
@@ -254,6 +220,23 @@ void loop()
     pulse = 1;
     timer = 0;
   }
-  delay(5);
-  
+  delay(5); 
+}
+
+void DefaultMenu()
+{
+  lcd.clear();
+  lcd.setCursor(1, 0);
+  lcd.print("SLCT Motor 1-6,");
+  lcd.setCursor(1, 1);
+  lcd.print("SPD 7-8, RES 9");
+}
+void SelectMenu()
+{
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("SLCT Motor: ");
+  lcd.print(num + 1);
+  lcd.setCursor(0, 1);
+  lcd.print("DSLCT -> 0");
 }
